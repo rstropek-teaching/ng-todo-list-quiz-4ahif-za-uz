@@ -1,0 +1,52 @@
+<h1>TODO List</h1>
+<h4>Filter:</h4>
+Name:
+<input type="text" [(ngModel)]="name">
+<br> Hide done:
+<input type="checkbox" [(ngModel)]="hideDone">
+
+<hr>
+<!-- - - - - - - - - - - - - - - - - - - - - - - -->
+
+<table>
+  <ng-container *ngFor="let item of items | async">
+    <tr *ngIf="(!name || item.assignedTo === name) && !(hideDone && item.done)">
+      <td>
+        {{ item.id }}
+      </td>
+      <td>
+        {{ item.description }}
+      </td>
+      <td>
+        {{ item.assignedTo }}
+      </td>
+      <td>
+        <input type="checkbox" [(ngModel)]="item.done" (click)="doneClick(item)">
+      </td>
+      <td>
+        <button (click)="deleteItem(item.id)">Delete</button>
+      </td>
+      <td>
+        <button (click)="patchItem(item.id)">Patch</button>
+      </td>
+    </tr>
+  </ng-container>
+</table>
+
+<hr>
+<!-- - - - - - - - - - - - - - - - - - - - - - - -->
+
+<h4>New Values:</h4>
+Description:
+<input type="text" [(ngModel)]="newDescription">
+<br> Assigned To:
+<select [(ngModel)]="newAssignedTo">
+  <option *ngFor="let person of people | async">{{ person.name }}</option>
+</select>
+<br>
+<button (click)="addItem()">Add</button>
+
+<blockquote>use 'Add' to create a new item with these values or 'Patch' to override specific items with these values</blockquote>
+
+<hr>
+<!-- - - - - - - - - - - - - - - - - - - - - - - -->
